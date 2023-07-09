@@ -17,6 +17,7 @@ fn init() {
 }
 
 #[tokio::test]
+#[ntest::timeout(1000000)]
 pub async fn init_httpd_add_remote() {
     init();
 
