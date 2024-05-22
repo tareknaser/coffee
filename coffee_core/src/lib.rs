@@ -18,6 +18,8 @@ pub enum CoffeeOperation {
     Remote(Option<RemoteAction>, Option<String>),
     /// Setup(core lightning root path)
     Setup(String),
+    /// Teardown(core lightning root path)
+    Teardown(String),
     Show(String),
     /// Search(plugin name)
     Search(String),

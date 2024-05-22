@@ -60,6 +60,9 @@ pub enum CoffeeCommand {
     /// configuration
     #[clap(arg_required_else_help = true)]
     Setup { cln_conf: String },
+    /// Teardown coffee configuration
+    #[clap(arg_required_else_help = false)]
+    Teardown { cln_conf: String },
     /// show the README file of the plugin
     #[clap(arg_required_else_help = true)]
     Show { plugin: String },
@@ -107,6 +110,7 @@ impl From<&CoffeeCommand> for coffee_core::CoffeeOperation {
             CoffeeCommand::Upgrade { repo, verbose } => Self::Upgrade(repo.to_owned(), *verbose),
             CoffeeCommand::List {} => Self::List,
             CoffeeCommand::Setup { cln_conf } => Self::Setup(cln_conf.to_owned()),
+            CoffeeCommand::Teardown { cln_conf } => Self::Teardown(cln_conf.to_owned()),
             CoffeeCommand::Remote { action, name } => {
                 if let Some(action) = action {
                     return Self::Remote(Some(action.into()), name.clone());

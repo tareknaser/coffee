@@ -139,6 +139,9 @@ async fn run(args: CoffeeArgs, mut coffee: CoffeeManager) -> Result<(), CoffeeEr
             // and the coffee script
             coffee.setup(&cln_conf).await?;
         }
+        CoffeeCommand::Teardown { cln_conf } => {
+            coffee.teardown(&cln_conf).await?;
+        }
         CoffeeCommand::Show { plugin } => {
             let val = coffee.show(&plugin).await?;
 

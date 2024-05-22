@@ -243,6 +243,20 @@ impl CoffeeManager {
         conf.flush()?;
         Ok(())
     }
+
+    /// Teardown the coffee configuration given the cln directory
+    pub async fn teardown_with_cln(&mut self, cln_dir: &str) -> Result<(), CoffeeError> {
+        if self.cln_config.is_none() {
+            return Err(error!("no cln configuration found"));
+        }
+        let path_with_network = format!("{cln_dir}/{}/config", self.config.network);
+        log::info!("teardown coffee in the following cln config {path_with_network}");
+        let mut conf = self.cln_config.clone().unwrap();
+        conf.rm_subconf(&self.coffee_cln_config.clone().path)
+            .map_err(|err| error!("{}", &err.cause))?;
+        conf.flush()?;
+        Ok(())
+    }
 }
 
 #[async_trait]
@@ -420,6 +434,13 @@ impl PluginManager for CoffeeManager {
     async fn setup(&mut self, cln_dir: &str) -> Result<(), CoffeeError> {
         self.setup_with_cln(cln_dir).await?;
         log::info!("cln configured");
+        self.flush().await?;
+        Ok(())
+    }
+
+    async fn teardown(&mut self, cln_dir: &str) -> Result<(), CoffeeError> {
+        self.teardown_with_cln(cln_dir).await?;
+        log::info!("cln configuration removed");
         self.flush().await?;
         Ok(())
     }

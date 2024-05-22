@@ -43,6 +43,10 @@ pub trait PluginManager {
     /// plugin manager.
     async fn setup(&mut self, cln_conf_path: &str) -> Result<(), CoffeeError>;
 
+    /// tear down the core lightning configuration target for the
+    /// plugin manager.
+    async fn teardown(&mut self, cln_conf_path: &str) -> Result<(), CoffeeError>;
+
     /// show the README file of the plugin
     async fn show(&mut self, plugin: &str) -> Result<CoffeeShow, CoffeeError>;
 
